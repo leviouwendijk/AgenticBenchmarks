@@ -5,23 +5,66 @@ import PackageDescription
 
 let package = Package(
     name: "AgenticBenchmarks",
+    platforms: [
+        .macOS(.v13)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "AgenticBenchmarks",
             targets: ["AgenticBenchmarks"]
         ),
+        .executable(
+            name: "t_agentic_bench",
+            targets: ["AgenticBenchmarksCLI"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/leviouwendijk/Agentic.git", branch: "master"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "AgenticBenchmarks"
+            name: "AgenticBenchmarks",
+            dependencies: [
+                .product(name: "Agentic", package: "Agentic"),
+                .product(name: "AgenticContext", package: "Agentic"),
+            ]
         ),
-        .testTarget(
-            name: "AgenticBenchmarksTests",
-            dependencies: ["AgenticBenchmarks"]
+        .executableTarget(
+            name: "AgenticBenchmarksCLI",
+            dependencies: [
+                "AgenticBenchmarks",
+                .product(name: "Agentic", package: "Agentic"),
+                .product(name: "AgenticContext", package: "Agentic"),
+            ],
+            path: "Testing/AgenticBenchmarksCLI"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
+
+for target in package.targets {
+    switch target.type {
+    case .regular, .executable, .test, .macro:
+        var settings = target.swiftSettings ?? []
+
+        settings.append(
+            .treatAllWarnings(as: .error)
+        )
+
+        settings.append(
+            .unsafeFlags(
+                [
+                    "-continue-building-after-errors"
+                ]
+            )
+        )
+
+        target.swiftSettings = settings
+
+    case .plugin, .system, .binary:
+        break
+
+    @unknown default:
+        break
+    }
+}

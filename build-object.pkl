@@ -1,0 +1,20 @@
+uuid = "E32A525E-E2E0-4978-8105-0BFD60B318C7"
+name = "AgenticBenchmarks"
+types { "library" }
+versions {
+    release {
+        major = 0
+        minor = 1
+        patch = 0
+    }
+}
+compile {
+    use = false
+    arguments { }
+}
+tests {
+    primary = "t_agentic_bench"
+}
+details = ""
+author = "levi"
+update = "https://raw.githubusercontent.com/leviouwendijk/AgenticBenchmarks/master/build-object.pkl"
