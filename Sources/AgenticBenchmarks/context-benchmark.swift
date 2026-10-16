@@ -70,6 +70,7 @@ public enum ContextBenchmark {
         public let measuredInputTokens: Int?
         public let measuredOutputTokens: Int?
         public let measuredCostUSD: Double?
+        public let measuredWallSeconds: Double?
         public let passedTasks: Int?
     }
 
@@ -192,6 +193,8 @@ public enum ContextBenchmark {
                     ? measured.compactMap(\.measuredOutputTokens).reduce(0,+) : nil,
                 measuredCostUSD: allObserved && measured.allSatisfy({ $0.costUSD != nil })
                     ? measured.compactMap(\.costUSD).reduce(0,+) : nil,
+                measuredWallSeconds: allObserved && measured.allSatisfy({ $0.wallSeconds != nil })
+                    ? measured.compactMap(\.wallSeconds).reduce(0,+) : nil,
                 passedTasks: allObserved && measured.allSatisfy({ $0.taskPassed != nil })
                     ? measured.filter { $0.taskPassed == true }.count : nil
             )
