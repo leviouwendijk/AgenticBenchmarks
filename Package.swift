@@ -26,7 +26,7 @@ let package = Package(
             name: "AgenticBenchmarks",
             dependencies: [
                 .product(name: "Agentic", package: "Agentic"),
-                .product(name: "AgenticContext", package: "Agentic"),
+                .product(name: "AgenticContextWindow", package: "Agentic"),
             ]
         ),
         .executableTarget(
@@ -34,7 +34,7 @@ let package = Package(
             dependencies: [
                 "AgenticBenchmarks",
                 .product(name: "Agentic", package: "Agentic"),
-                .product(name: "AgenticContext", package: "Agentic"),
+                .product(name: "AgenticContextWindow", package: "Agentic"),
             ],
             path: "Testing/AgenticBenchmarksCLI"
         ),

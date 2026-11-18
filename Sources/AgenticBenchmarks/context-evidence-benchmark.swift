@@ -1,5 +1,5 @@
 import Agentic
-import AgenticContext
+import AgenticContextWindow
 
 public enum ContextEvidenceBenchmark {
     public struct Report: Codable, Sendable, Hashable {

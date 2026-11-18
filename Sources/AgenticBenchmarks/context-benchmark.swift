@@ -1,5 +1,5 @@
 import Agentic
-import AgenticContext
+import AgenticContextWindow
 import Foundation
 
 /// Provider-neutral inference-request benchmark. Estimates are NOT actual
