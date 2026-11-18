@@ -14,10 +14,10 @@ public enum ContextBenchmark {
     public struct Scenario: Sendable {
         public let turns: Int
         public let payloadRepeats: Int
-        public let history: Context.HistoryPolicy
+        public let history: ContextWindow.HistoryPolicy
 
         public init(turns: Int = 14, payloadRepeats: Int = 70,
-                    history: Context.HistoryPolicy = .init(maximumTurns: 2, maximumTokens: 4_000)) {
+                    history: ContextWindow.HistoryPolicy = .init(maximumTurns: 2, maximumTokens: 4_000)) {
             self.turns = turns
             self.payloadRepeats = payloadRepeats
             self.history = history
@@ -88,8 +88,8 @@ public enum ContextBenchmark {
 
     private static let marker = "corrected_invocation_use_safe_mode"
 
-    private struct Resolver: Context.RecordResolving {
-        func resolve(_ pointer: Context.Pointer) async throws -> Context.Resolved {
+    private struct Resolver: ContextWindow.RecordResolving {
+        func resolve(_ pointer: ContextWindow.Pointer) async throws -> ContextWindow.Resolved {
             .init(pointer: .init(source: pointer.source, record: pointer.record,
                     selection: pointer.selection, revision: .recorded("tool-fixture-v1")),
                   messages: [.init(id: "context.known_tool_correction", role: .assistant,
@@ -124,17 +124,17 @@ public enum ContextBenchmark {
         guard scenario.turns >= 5, scenario.payloadRepeats > 0 else {
             throw Failure.invalidScenario
         }
-        let policy = Context.Policy(
+        let policy = ContextWindow.Policy(
             preferredInputTokens: 80_000, maximumInputTokens: 100_000,
             reservedOutputTokens: 2_000, maximumResolutions: 8,
             history: scenario.history
         )
         var samples: [Sample] = []
-        let empty = Context.Frame(workingSetID: "bench", items: [],
+        let empty = ContextWindow.Frame(workingSetID: "bench", items: [],
             skippedAllocationIDs: [], inputBudget: 100_000, estimatedInputTokens: 0)
 
         for strategy in Strategy.allCases {
-            let allocator = try Context.Allocator(policy: policy)
+            let allocator = try ContextWindow.Allocator(policy: policy)
             try await allocator.createWorkingSet(id: "bench")
             for turn in 1...scenario.turns {
                 if strategy == .dynamic_with_finding && turn == 4 {
@@ -146,9 +146,9 @@ public enum ContextBenchmark {
                     ))], to: "bench")
                 }
                 let request = request(through: turn, repeats: scenario.payloadRepeats)
-                let prepared: Context.InferencePreparation
+                let prepared: ContextWindow.InferencePreparation
                 if strategy == .accumulating {
-                    prepared = try Context.InferencePreparer.prepare(
+                    prepared = try ContextWindow.InferencePreparer.prepare(
                         request: request, frame: empty, delivery: .supplement,
                         maximumInputTokens: 98_000
                     )

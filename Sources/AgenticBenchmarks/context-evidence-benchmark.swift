@@ -9,10 +9,10 @@ public enum ContextEvidenceBenchmark {
         public let staleFindingExcluded: Bool
     }
 
-    private actor Fixture: Context.RecordResolving {
+    private actor Fixture: ContextWindow.RecordResolving {
         private var version = "v1"
         func changeRevision() { version = "v2" }
-        func resolve(_ pointer: Context.Pointer) async throws -> Context.Resolved {
+        func resolve(_ pointer: ContextWindow.Pointer) async throws -> ContextWindow.Resolved {
             let current = pointer.record == "original" ? version : "finding-v1"
             return .init(pointer: .init(source: pointer.source,
                                         record: pointer.record,
@@ -28,17 +28,17 @@ public enum ContextEvidenceBenchmark {
 
     public static func run() async throws -> Report {
         let fixture = Fixture()
-        let correction = Context.Record(id: "tool-correction", kind: "finding",
+        let correction = ContextWindow.Record(id: "tool-correction", kind: "finding",
             pointer: .init(source: "fixture", record: "finding",
                            revision: .recorded("finding-v1")),
             derivedFrom: [.init(source: "fixture", record: "original",
                                 revision: .recorded("v1"))])
-        let unrelated = Context.Record(id: "weather", kind: "finding",
+        let unrelated = ContextWindow.Record(id: "weather", kind: "finding",
             pointer: .init(source: "fixture", record: "weather",
                            revision: .recorded("finding-v1")),
             derivedFrom: [.init(source: "fixture", record: "original",
                                 revision: .recorded("v1"))])
-        let index = try Context.FindingIndex([
+        let index = try ContextWindow.FindingIndex([
             .init(record: correction, terms: ["tool", "correction"]),
             .init(record: unrelated, terms: ["weather"])
         ])
@@ -46,10 +46,10 @@ public enum ContextEvidenceBenchmark {
                                                using: fixture)
         let relevant = entries.map(\.record.id).contains("tool-correction")
         let irrelevant = !entries.map(\.record.id).contains("weather")
-        let allocator = try Context.Allocator()
+        let allocator = try ContextWindow.Allocator()
         try await allocator.createWorkingSet(id: "benchmark-evidence")
         try await allocator.apply(entries.map {
-            .allocate(Context.FindingIndex.allocation(for: $0, required: true))
+            .allocate(ContextWindow.FindingIndex.allocation(for: $0, required: true))
         }, to: "benchmark-evidence")
         let frame = try await allocator.prepareFrame(for: "benchmark-evidence",
             using: fixture, modelContextLimit: 100_000)

@@ -7,7 +7,7 @@
       "location" : "https://github.com/leviouwendijk/Agentic.git",
       "state" : {
         "branch" : "master",
-        "revision" : "ace46b5232d524d4ef706548e4a7c47de45020ae"
+        "revision" : "46adedcbdb58d101f7bec06321c6c21d6c6444ec"
       }
     },
     {
@@ -71,6 +71,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "f0c1d8bf5beda0de51c9e95b687fbdec9e4ce7b0"
+      }
+    },
+    {
+      "identity" : "frame",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leviouwendijk/Frame.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f86a019072fde4c8640f7b89a51c50c79f36b3ad"
       }
     },
     {
@@ -161,6 +170,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "0c1800e32bf5b0c4f2a19b2a28484b18a7edc7de"
+      }
+    },
+    {
+      "identity" : "milieu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leviouwendijk/Milieu.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "5b6211d7b2207c8b999012584c48a33f25f15668"
       }
     },
     {
@@ -314,6 +332,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "f14620970eb1b4d77ea4811c053a65cbd1b6f972"
+      }
+    },
+    {
+      "identity" : "variables",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/leviouwendijk/Variables.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "3e118cecca53a964099a0afe495e53fe9b325ff0"
       }
     },
     {
