@@ -13,10 +13,6 @@ let package = Package(
             name: "AgenticBenchmarks",
             targets: ["AgenticBenchmarks"]
         ),
-        .executable(
-            name: "t_agentic_bench",
-            targets: ["AgenticBenchmarksCLI"]
-        ),
     ],
     dependencies: [
         .package(url: "https://github.com/leviouwendijk/Agentic.git", branch: "master"),
@@ -28,15 +24,6 @@ let package = Package(
                 .product(name: "Agentic", package: "Agentic"),
                 .product(name: "AgenticContextWindow", package: "Agentic"),
             ]
-        ),
-        .executableTarget(
-            name: "AgenticBenchmarksCLI",
-            dependencies: [
-                "AgenticBenchmarks",
-                .product(name: "Agentic", package: "Agentic"),
-                .product(name: "AgenticContextWindow", package: "Agentic"),
-            ],
-            path: "Testing/AgenticBenchmarksCLI"
         ),
     ],
     swiftLanguageModes: [.v6]

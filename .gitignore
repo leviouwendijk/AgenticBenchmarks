@@ -17,3 +17,5 @@ DerivedData/
 .env
 .env.*
 .env/*
+**/.testflows/*
+!**/.testflows/snapshots/
